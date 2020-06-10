@@ -1,7 +1,7 @@
 ﻿using GlobalDefine;
-public class MonsterStateDead : MonsterStateBase
+public class MonsterStateAttack : MonsterStateBase
 {
-	public MonsterStateDead(Monster o) : base(o)
+	public MonsterStateAttack(Monster o) : base(o)
 	{
 	}
 

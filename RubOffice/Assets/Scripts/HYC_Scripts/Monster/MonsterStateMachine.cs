@@ -3,12 +3,25 @@ using UnityEngine;
 using GlobalDefine;
 public abstract class MonsterStateMachine : MonoBehaviour
 {
-	private Dictionary<eMonsterState, MonsterStateBase> stateDict = new Dictionary<eMonsterState, MonsterStateBase>();
-	private MonsterStateBase cState;
+	protected Dictionary<eMonsterState, MonsterStateBase> _stateDict = new Dictionary<eMonsterState, MonsterStateBase>();
+	protected MonsterStateBase _cState;
+	public abstract void Setting();
 	public void ChangeState(eMonsterState stateType)
 	{
-		cState.OnEnd();
-		cState = stateDict[stateType];
-		cState.OnStart();
+		_cState.OnEnd();
+		_cState = _stateDict[stateType];
+		_cState.OnStart();
+	}
+	public void ChangeStateIdle()
+	{
+		_cState._monsterObject.ChangeAnimation(eMonsterState.Idle);
+	}
+	private void Update()
+	{
+		if(_cState._monsterObject.IsDead())
+		{
+			_cState._monsterObject.ChangeAnimation(eMonsterState.Dead);
+		}
+		_cState.Tick();
 	}
 }

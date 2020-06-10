@@ -1,7 +1,7 @@
 ﻿using GlobalDefine;
-public class MonsterStateIdle : MonsterStateBase
+public class MonsterStateMove : MonsterStateBase
 {
-	public MonsterStateIdle(Monster o) : base(o)
+	public MonsterStateMove(Monster o) : base(o)
 	{
 	}
 
@@ -16,9 +16,9 @@ public class MonsterStateIdle : MonsterStateBase
 			_monsterObject.ChangeAnimation(eMonsterState.Attack);
 			return true;
 		}
-		else if (_monsterObject.IsMove())
+		else if (_monsterObject.IsIdle())
 		{
-			_monsterObject.ChangeAnimation(eMonsterState.Move);
+			_monsterObject.ChangeAnimation(eMonsterState.Idle);
 			return true;
 		}
 		return false;
@@ -31,8 +31,9 @@ public class MonsterStateIdle : MonsterStateBase
 			return;
 		}
 	}
+
 	public override void OnEnd()
 	{
-		
+
 	}
 }
