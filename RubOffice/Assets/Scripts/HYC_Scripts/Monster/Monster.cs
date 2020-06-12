@@ -6,9 +6,12 @@ public class Monster : MonoBehaviour
 	[SerializeField] protected MonsterStateMachine _stateMachine;
 	[SerializeField] protected Animator _monsterAnimation;
 	[SerializeField] protected CircleCollider2D _monsterColider;
-	protected MonsterData _monsterData = null;
+	protected MonsterData _monsterData;
 	protected float _angle = 0;
 	protected int _monsterID = 0;
+	//TEST
+	public int _fullHP;
+	//
 	private void Awake()
 	{
 		ResetData();
@@ -17,13 +20,28 @@ public class Monster : MonoBehaviour
 	{
 		gameObject.SetActive(true);
 		_stateMachine.Setting();
+		_monsterData = new MonsterData();
+		//TEST
+		_monsterData.healthPoint = 100;
+		_fullHP = 100;
+		//
 	}
 	public void SettingMonsterData(MonsterData monsterData)
 	{
 		_monsterData = monsterData;
 	}
-	public void Damage(float damage)
+	public void Damage(int hitDamage)
 	{
+		if (hitDamage < 1)
+		{
+			hitDamage = 1;
+		}
+		_monsterData.healthPoint -= hitDamage;
+		UIManager_InGame.Ins._damageTextPool.ShowDamage(hitDamage, transform.position);
+		if (_monsterData.healthPoint <= 0)
+		{
+			Dead();
+		}
 	}
 	public virtual void Dead()
 	{
@@ -63,14 +81,16 @@ public class Monster : MonoBehaviour
 		}
 		return false;
 	}
-	public bool IsDead()
+	public void TestCode()
 	{
+		if (Input.GetKeyDown(KeyCode.T))
+		{
+			Dead();
+		}
 		if (Input.GetKeyDown(KeyCode.R))
 		{
-			_stateMachine.ChangeState(eMonsterState.Dead);
-			return true;
+			Damage(1);
 		}
-		return false;
 	}
 	public void ChangeAnimation(eMonsterState monsterState)
 	{
@@ -85,6 +105,10 @@ public class Monster : MonoBehaviour
 	public MonsterStateMachine GetStateMachine()
 	{
 		return _stateMachine;
+	}
+	public MonsterData GetMonsterData()
+	{
+		return _monsterData;
 	}
 	/* 계산용 */
 	public Vector3 GetForward()

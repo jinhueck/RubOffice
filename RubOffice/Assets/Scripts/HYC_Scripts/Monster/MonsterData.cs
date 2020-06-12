@@ -1,5 +1,5 @@
 ﻿using GlobalDefine;
-public class MonsterData
+public struct MonsterData
 {
 	public string monsterID;
 	public string monsterName;
