@@ -18,10 +18,7 @@ public abstract class MonsterStateMachine : MonoBehaviour
 	}
 	private void Update()
 	{
-		if(_cState._monsterObject.IsDead())
-		{
-			_cState._monsterObject.ChangeAnimation(eMonsterState.Dead);
-		}
+		_cState._monsterObject.TestCode();
 		_cState.Tick();
 	}
 }
