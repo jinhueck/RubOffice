@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
+    public static PlayerManager instance;
+
     public JoyStickController joyStickController;
     public WeaponController weaponController;
+    public ButtonController buttonController;
 
     public PlayerInfo playerInfo;
     public float playerBodyDistance;
@@ -18,6 +21,8 @@ public class PlayerManager : MonoBehaviour
 
     private void Update()
     {
+        weaponController.UpdateWeapon(playerInfo.transform.position);
+
         MoveFunc();
         AttackFunc();
     }
@@ -26,8 +31,13 @@ public class PlayerManager : MonoBehaviour
 
     public void Init()
     {
+        if (PlayerManager.instance == null)
+            PlayerManager.instance = this;
+
         playerInfo.Init();
         playerBodyDistance = playerInfo.collider2D.size.x * 0.5f;
+
+        buttonController.Init();
     }
 
     public void MoveFunc()
