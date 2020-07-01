@@ -23,4 +23,5 @@ public class UIManager_InGame : MonoBehaviour
 	}
 	#endregion
 	public DamageTextPool _damageTextPool;
+	public HealthPointPool _healthPointPool;
 }

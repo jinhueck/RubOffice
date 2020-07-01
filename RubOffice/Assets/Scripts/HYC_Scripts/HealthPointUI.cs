@@ -24,7 +24,7 @@ public class HealthPointUI : MonoBehaviour
 			SetOff();
 			return;
 		}
-		gameObject.transform.position = _monster.gameObject.transform.position + Vector3.up;
+		gameObject.transform.position = _monster.gameObject.transform.position + (Vector3.down * 5);
 		hpText.text = cHp.ToString();
 		hpImage.fillAmount = cHp / _monster._fullHP;
 	}

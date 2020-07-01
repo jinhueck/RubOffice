@@ -6,6 +6,7 @@ public class Monster : MonoBehaviour
 	[SerializeField] protected MonsterStateMachine _stateMachine;
 	[SerializeField] protected Animator _monsterAnimation;
 	[SerializeField] protected CircleCollider2D _monsterColider;
+	[SerializeField] protected Rigidbody2D _monsterRigidbody;
 	protected MonsterData _monsterData;
 	protected float _angle = 0;
 	protected int _monsterID = 0;
@@ -21,6 +22,7 @@ public class Monster : MonoBehaviour
 		gameObject.SetActive(true);
 		_stateMachine.Setting();
 		_monsterData = new MonsterData();
+		UIManager_InGame.Ins._healthPointPool.Setting(GetComponent<Monster>());
 		//TEST
 		_monsterData.healthPoint = 100;
 		_fullHP = 100;
@@ -38,6 +40,11 @@ public class Monster : MonoBehaviour
 		}
 		_monsterData.healthPoint -= hitDamage;
 		UIManager_InGame.Ins._damageTextPool.ShowDamage(hitDamage, transform.position);
+		if (_monsterRigidbody)
+		{
+			_monsterRigidbody.velocity = Vector2.zero;
+			_monsterRigidbody.AddForce(Vector2.left * 2000);
+		}
 		if (_monsterData.healthPoint <= 0)
 		{
 			Dead();
@@ -45,8 +52,8 @@ public class Monster : MonoBehaviour
 	}
 	public virtual void Dead()
 	{
-		_stateMachine.ChangeState(eMonsterState.Dead);
-		SetColiderActive(false);
+		ChangeAnimation(eMonsterState.Dead);
+		//SetColiderActive(false);
 	}
 	public void SetColiderActive(bool isActive)
 	{
@@ -58,7 +65,7 @@ public class Monster : MonoBehaviour
 	{
 		if (Input.GetKeyDown(KeyCode.Q))
 		{
-			_stateMachine.ChangeState(eMonsterState.Idle);
+			ChangeAnimation(eMonsterState.Idle);
 			return true;
 		}
 		return false;
@@ -67,16 +74,16 @@ public class Monster : MonoBehaviour
 	{
 		if (Input.GetKeyDown(KeyCode.W))
 		{
-			_stateMachine.ChangeState(eMonsterState.Move);
+			ChangeAnimation(eMonsterState.Move);
 			return true;
 		}
 		return false;
 	}
-	public bool IsAttack()
+	public virtual bool IsAttack()
 	{
 		if (Input.GetKeyDown(KeyCode.E))
 		{
-			_stateMachine.ChangeState(eMonsterState.Attack);
+			ChangeAnimation(eMonsterState.Attack);
 			return true;
 		}
 		return false;
@@ -94,7 +101,10 @@ public class Monster : MonoBehaviour
 	}
 	public void ChangeAnimation(eMonsterState monsterState)
 	{
-		_monsterAnimation.SetInteger("Action", (int)monsterState);
+		if (_monsterAnimation)
+		{
+			_monsterAnimation.SetInteger("Action", (int)monsterState);
+		}
 		_stateMachine.ChangeState(monsterState);
 	}
 	#endregion
