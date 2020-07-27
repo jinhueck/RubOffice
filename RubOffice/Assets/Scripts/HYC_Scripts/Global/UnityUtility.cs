@@ -2,15 +2,6 @@
 
 public class UnityUtility : MonoBehaviour
 {
-    public bool IsAndroid()
-    {
-        if (Application.platform == RuntimePlatform.Android &&
-            Application.platform != RuntimePlatform.OSXEditor &&
-            Application.platform != RuntimePlatform.WindowsEditor)
-            return true;
-        return false;
-    }
-
     public T ParserJsonToObject<T>(string strJson)
     {
         return JsonUtility.FromJson<T>(strJson);
